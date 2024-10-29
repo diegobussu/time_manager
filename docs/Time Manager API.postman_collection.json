@@ -1,0 +1,893 @@
+{
+	"info": {
+		"_postman_id": "406c8984-3c5a-4485-81da-83b450661d21",
+		"name": "Time Manager API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24100466"
+	},
+	"item": [
+		{
+			"name": "Authentification",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"general_manager@gotham.com\",\n    \"password\": \"general_manager\",\n    \"firstname\": \"general_manager\",\n    \"lastname\": \"general_manager\",\n    \"rank\": \"general_manager\"\n}\n\n// {\n//    \"email\": \"manager@gotham.com\",\n//    \"password\": \"manager\",\n//    \"firstname\": \"manager\",\n//    \"lastname\": \"manager\",\n// }\n\n\n// {\n//    \"email\": \"employee@gotham.com\",\n//    \"password\": \"employee\",\n//    \"firstname\": \"employee\",\n//    \"lastname\": \"employee\",\n// }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/auth/register",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"general_manager@gotham.com\",\n    \"password\": \"general_manager\"\n}\n\n// {\n//   \"email\": \"manager@gotham.com\",\n//   \"password\": \"manager\"\n// }\n\n// {\n//    \"email\": \"employee@gotham.com\",\n//    \"password\": \"employee\"\n// }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/auth/login",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "GM",
+					"item": [
+						{
+							"name": "Reset Password User by ID",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "token",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"new_password\": \"employee\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/users/:id/reset-password",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"users",
+										":id",
+										"reset-password"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "GM/M",
+					"item": [
+						{
+							"name": "List All Users",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "token"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/api/users",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get User By ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "token"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/api/users/:id",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update User by ID",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "token"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"user\": {\n        \"email\": \"manager@gotham.com\",\n        \"firstname\": \"manager\",\n        \"lastname\": \"manager\",\n        \"rank\": \"manager\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/users/4",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"users",
+										"4"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete User by ID",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "token"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/api/users/:id",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Reset  Yourself Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "token",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"last_password\": \"general_manager\",\n    \"new_password\": \"general_manager\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/users/reset-password",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Yourself",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "token"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/users/me",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Yourself",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "token"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user\": {\n    \"email\": \"employee@manager.com\",\n    \"firstname\": \"employee\",\n    \"lastname\": \"employee\"\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/users/me",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Yoursell",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "token"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/users/me",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Teams",
+			"item": [
+				{
+					"name": "GM/M",
+					"item": [
+						{
+							"name": "Create Team",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "token"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"test\"\n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/teams",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"teams"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Yourself Teams",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "token"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/api/teams",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"teams"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Team by ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "token"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/api/teams/:id",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"teams",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Team by ID",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "token"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"test-1\"\n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/teams/:id",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"teams",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Team by ID",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "token"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/api/teams/:id",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"teams",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add member",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "SFMyNTY.g2gDYQFuBgC1T4DDkgFiAAFRgA.6xtSg-2xhfAi-VYQt8N_uQp_vW419URW2JmzuAHMJT0"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"user_id\": 3\n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/teams/2/members/add",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"teams",
+										"2",
+										"members",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove member",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "token"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"user_id\": 4\n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/teams/:id/members/remove",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"teams",
+										":id",
+										"members",
+										"remove"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Clocks",
+			"item": [
+				{
+					"name": "Create Yourself Clock",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "token"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"time\": \"2024-10-18T10:00:00Z\"\n}"
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/clocks",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"clocks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Yourself Clock",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "token"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/clocks",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"clocks"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Working Times",
+			"item": [
+				{
+					"name": "GM/M",
+					"item": [
+						{
+							"name": "Create Working Time",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "token"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"start\": \"2024-10-18T09:00:00Z\",\n    \"end\": \"2024-10-18T17:00:00Z\"\n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/workingtimes/user/:user_id",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"workingtimes",
+										"user",
+										":user_id"
+									],
+									"variable": [
+										{
+											"key": "user_id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Working Time by ID",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "token"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"start\": \"2024-10-18T10:00:00Z\",\n    \"end\": \"2024-10-18T18:00:00Z\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/workingtimes/entry/:id",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"workingtimes",
+										"entry",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Working Time by ID",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "token"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/api/workingtimes/entry/:id",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"workingtimes",
+										"entry",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get Yourself Working Times",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "token"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/workingtimes/me",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"workingtimes",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Working Times",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "token"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/workingtimes/user/:user_id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"workingtimes",
+								"user",
+								":user_id"
+							],
+							"variable": [
+								{
+									"key": "user_id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Working Time",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "token"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/workingtimes/user/:user_id/:id",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"workingtimes",
+								"user",
+								":user_id",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "user_id",
+									"value": ""
+								},
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "http://localhost:4000",
+			"type": "string"
+		}
+	]
+}

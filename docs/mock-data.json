@@ -1,0 +1,100 @@
+{
+    "general_manager": {
+      "email": "gm@shiftsync.com",
+      "firstname": "Jean",
+      "lastname": "Dupont",
+      "password": "securepassword123",
+      "rank": "general_manager"
+    },
+  
+    "managers": [
+      {
+        "email": "manager1@shiftsync.com",
+        "firstname": "Alice",
+        "lastname": "Martin",
+        "password": "managerpassword1",
+        "rank": "manager"
+      },
+      {
+        "email": "manager2@shiftsync.com",
+        "firstname": "Bob",
+        "lastname": "Bernard",
+        "password": "managerpassword2",
+        "rank": "manager"
+      },
+      {
+        "email": "manager3@shiftsync.com",
+        "firstname": "Claire",
+        "lastname": "Lefevre",
+        "password": "managerpassword3",
+        "rank": "manager"
+      }
+    ],
+  
+    "employees": [
+      {
+        "email": "employee1@shiftsync.com",
+        "firstname": "Céline",
+        "lastname": "Durand",
+        "password": "employeepassword1",
+        "rank": "employee"
+      },
+      {
+        "email": "employee2@shiftsync.com",
+        "firstname": "David",
+        "lastname": "Leroy",
+        "password": "employeepassword2",
+        "rank": "employee"
+      },
+      {
+        "email": "employee3@shiftsync.com",
+        "firstname": "Emma",
+        "lastname": "Moreau",
+        "password": "employeepassword3",
+        "rank": "employee"
+      },
+      {
+        "email": "employee4@shiftsync.com",
+        "firstname": "Lucas",
+        "lastname": "Gauthier",
+        "password": "employeepassword4",
+        "rank": "employee"
+      },
+      {
+        "email": "employee5@shiftsync.com",
+        "firstname": "Sophie",
+        "lastname": "Roux",
+        "password": "employeepassword5",
+        "rank": "employee"
+      },
+      {
+        "email": "employee6@shiftsync.com",
+        "firstname": "Julien",
+        "lastname": "Bernard",
+        "password": "employeepassword6",
+        "rank": "employee"
+      },
+      {
+        "email": "employee7@shiftsync.com",
+        "firstname": "Marie",
+        "lastname": "Lemoine",
+        "password": "employeepassword7",
+        "rank": "employee"
+      },
+      {
+        "email": "employee8@shiftsync.com",
+        "firstname": "Thomas",
+        "lastname": "Blanc",
+        "password": "employeepassword8",
+        "rank": "employee"
+      },
+      {
+        "email": "employee9@shiftsync.com",
+        "firstname": "Chloé",
+        "lastname": "Garnier",
+        "password": "employeepassword9",
+        "rank": "employee"
+      }
+    ]
+  }
+  

@@ -1,0 +1,990 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "Time Manager API",
+    "description" : "API for managing time and related resources like users, clocks, working times, and teams.",
+    "version" : "1.0.0"
+  },
+  "components" : {
+    "securitySchemes" : {
+      "BearerAuth" : {
+        "type" : "http",
+        "scheme" : "bearer",
+        "bearerFormat" : "JWT"
+      }
+    },
+    "schemas" : {
+      "User" : {
+        "type" : "object",
+        "x-examples" : { },
+        "properties" : {
+          "email" : {
+            "type" : "string"
+          },
+          "firstname" : {
+            "type" : "string"
+          },
+          "lastname" : {
+            "type" : "string"
+          },
+          "password" : {
+            "type" : "string"
+          },
+          "rank" : {
+            "enum" : [ "empoyee", "manager", "general_manager" ]
+          },
+          "team_id" : {
+            "type" : "integer"
+          }
+        }
+      },
+      "Clock" : {
+        "type" : "object",
+        "title" : "Clock",
+        "properties" : {
+          "status" : {
+            "type" : "boolean",
+            "default" : true
+          },
+          "time" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : "YYYY-MM-DD hh:mm:"
+          },
+          "user_id" : {
+            "type" : "integer"
+          }
+        }
+      },
+      "Workingtimes" : {
+        "title" : "Workingtimes",
+        "type" : "object",
+        "properties" : {
+          "end" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : "YYYY-MM-DD hh:mm:ss"
+          },
+          "start" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : "YYYY-MM-DD hh:mm:ss"
+          },
+          "user_id" : {
+            "type" : "integer"
+          }
+        }
+      },
+      "Team" : {
+        "title" : "Team",
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "owner_id" : {
+            "type" : "integer"
+          }
+        }
+      }
+    }
+  },
+  "servers" : [ {
+    "description" : "SwaggerHub API Auto Mocking",
+    "url" : "https://virtserver.swaggerhub.com/BASTFV/time_manager_doc_api/1.0.0"
+  }, {
+    "url" : "http://localhost:4000"
+  } ],
+  "paths" : {
+    "/api/auth/register" : {
+      "post" : {
+        "tags" : [ "Authentification" ],
+        "summary" : "Register a new user",
+        "requestBody" : {
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/User"
+              },
+              "example" : {
+                "email" : "general_manager@gotham.com",
+                "password" : "general_manager",
+                "firstname" : "general_manager",
+                "lastname" : "general_manager",
+                "rank" : "general_manager"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "User registered successfully"
+          }
+        }
+      }
+    },
+    "/api/auth/login" : {
+      "post" : {
+        "tags" : [ "Authentification" ],
+        "summary" : "Login a user",
+        "requestBody" : {
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/User"
+              },
+              "example" : {
+                "email" : "general_manager@gotham.com",
+                "password" : "general_manager"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "User logged in successfully"
+          }
+        }
+      }
+    },
+    "/api/clocks" : {
+      "post" : {
+        "tags" : [ "Clocks" ],
+        "summary" : "Create a new clock for the current user",
+        "security" : [ {
+          "BearerAuth" : [ ]
+        } ],
+        "requestBody" : {
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Clock"
+              },
+              "example" : {
+                "status" : true,
+                "time" : "2024-10-18T10:00:00Z",
+                "user_id" : 1
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Clock created successfully"
+          }
+        }
+      },
+      "get" : {
+        "tags" : [ "Clocks" ],
+        "summary" : "Get clocks of the current user",
+        "security" : [ {
+          "BearerAuth" : [ ]
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "List of user clocks",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Clock"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/workingtimes/me" : {
+      "get" : {
+        "tags" : [ "Working Times" ],
+        "summary" : "Get Yourself Working Times",
+        "security" : [ {
+          "BearerAuth" : [ ]
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Workingtimes"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/workingtimes/user/{user_id}" : {
+      "get" : {
+        "tags" : [ "Working Times" ],
+        "summary" : "Get Working Times by User ID",
+        "security" : [ {
+          "BearerAuth" : [ ]
+        } ],
+        "parameters" : [ {
+          "name" : "user_id",
+          "in" : "path",
+          "required" : true,
+          "description" : "ID of the user",
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Workingtimes"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/workingtimes/user/{user_id}/{id}" : {
+      "get" : {
+        "tags" : [ "Working Times" ],
+        "summary" : "Get Working Time by User ID",
+        "security" : [ {
+          "BearerAuth" : [ ]
+        } ],
+        "parameters" : [ {
+          "name" : "user_id",
+          "in" : "path",
+          "required" : true,
+          "description" : "ID of the user",
+          "schema" : {
+            "type" : "integer"
+          }
+        }, {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "description" : "ID of the working time entry",
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Workingtimes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/workingtimes" : {
+      "get" : {
+        "tags" : [ "Working Times" ],
+        "summary" : "Get All Working Times",
+        "security" : [ {
+          "BearerAuth" : [ ]
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Workingtimes"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Working Times" ],
+        "summary" : "Create Working Time",
+        "security" : [ {
+          "BearerAuth" : [ ]
+        } ],
+        "requestBody" : {
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "start" : {
+                    "type" : "string",
+                    "format" : "date-time",
+                    "example" : "2024-10-18T09:00:00Z"
+                  },
+                  "end" : {
+                    "type" : "string",
+                    "format" : "date-time",
+                    "example" : "2024-10-18T17:00:00Z"
+                  },
+                  "user_id" : {
+                    "type" : "integer",
+                    "example" : 123
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Created successfully",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Workingtimes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/workingtimes/entry/{entry_id}" : {
+      "put" : {
+        "tags" : [ "Working Times" ],
+        "summary" : "Update Working Time",
+        "security" : [ {
+          "BearerAuth" : [ ]
+        } ],
+        "parameters" : [ {
+          "name" : "entry_id",
+          "in" : "path",
+          "required" : true,
+          "description" : "ID of the working time entry",
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "requestBody" : {
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "start" : {
+                    "type" : "string",
+                    "format" : "date-time",
+                    "example" : "2024-10-18T10:00:00Z"
+                  },
+                  "end" : {
+                    "type" : "string",
+                    "format" : "date-time",
+                    "example" : "2024-10-18T18:00:00Z"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Updated successfully",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Workingtimes"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Working Times" ],
+        "summary" : "Delete Working Time",
+        "security" : [ {
+          "BearerAuth" : [ ]
+        } ],
+        "parameters" : [ {
+          "name" : "entry_id",
+          "in" : "path",
+          "required" : true,
+          "description" : "ID of the working time entry",
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Deleted successfully"
+          }
+        }
+      }
+    },
+    "/api/users/{id}/reset-password" : {
+      "post" : {
+        "summary" : "Reset Password User by ID",
+        "security" : [ {
+          "BearerAuth" : [ ]
+        } ],
+        "tags" : [ "Users" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "description" : "ID of the user",
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "new_password" : {
+                    "type" : "string",
+                    "example" : "employee"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Password reset successfully",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users" : {
+      "get" : {
+        "summary" : "List All Users",
+        "security" : [ {
+          "BearerAuth" : [ ]
+        } ],
+        "tags" : [ "Users" ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{id}" : {
+      "get" : {
+        "summary" : "Get User By ID",
+        "security" : [ {
+          "BearerAuth" : [ ]
+        } ],
+        "tags" : [ "Users" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "description" : "ID of the user",
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "summary" : "Update User by ID",
+        "security" : [ {
+          "BearerAuth" : [ ]
+        } ],
+        "tags" : [ "Users" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "description" : "ID of the user",
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "user" : {
+                    "type" : "object",
+                    "properties" : {
+                      "email" : {
+                        "type" : "string",
+                        "example" : "general@manager.com"
+                      },
+                      "firstname" : {
+                        "type" : "string",
+                        "example" : "General"
+                      },
+                      "lastname" : {
+                        "type" : "string",
+                        "example" : "Manager"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Updated successfully",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "summary" : "Delete User by ID",
+        "security" : [ {
+          "BearerAuth" : [ ]
+        } ],
+        "tags" : [ "Users" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "description" : "ID of the user",
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Deleted successfully",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/reset-password" : {
+      "post" : {
+        "summary" : "Reset Yourself Password",
+        "security" : [ {
+          "BearerAuth" : [ ]
+        } ],
+        "tags" : [ "Users" ],
+        "requestBody" : {
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "last_password" : {
+                    "type" : "string",
+                    "example" : "general_manager"
+                  },
+                  "new_password" : {
+                    "type" : "string",
+                    "example" : "general_manager"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Password reset successfully",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/me" : {
+      "get" : {
+        "summary" : "Get Yourself",
+        "security" : [ {
+          "BearerAuth" : [ ]
+        } ],
+        "tags" : [ "Users" ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "summary" : "Update Yourself",
+        "security" : [ {
+          "BearerAuth" : [ ]
+        } ],
+        "tags" : [ "Users" ],
+        "requestBody" : {
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "user" : {
+                    "type" : "object",
+                    "properties" : {
+                      "email" : {
+                        "type" : "string",
+                        "example" : "employee@manager.com"
+                      },
+                      "firstname" : {
+                        "type" : "string",
+                        "example" : "employee"
+                      },
+                      "lastname" : {
+                        "type" : "string",
+                        "example" : "employee"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Updated successfully",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "summary" : "Delete Yourself",
+        "security" : [ {
+          "BearerAuth" : [ ]
+        } ],
+        "tags" : [ "Users" ],
+        "responses" : {
+          "204" : {
+            "description" : "Deleted successfully",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/teams" : {
+      "post" : {
+        "summary" : "Create Team",
+        "security" : [ {
+          "BearerAuth" : [ ]
+        } ],
+        "tags" : [ "Teams" ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "name" : {
+                    "type" : "string",
+                    "example" : "test"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Team created successfully",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Team"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get" : {
+        "summary" : "List Yourself Teams",
+        "security" : [ {
+          "BearerAuth" : [ ]
+        } ],
+        "tags" : [ "Teams" ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Team"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/teams/{id}" : {
+      "get" : {
+        "summary" : "Get Team by ID",
+        "security" : [ {
+          "BearerAuth" : [ ]
+        } ],
+        "tags" : [ "Teams" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Team"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch" : {
+        "summary" : "Update Team by ID",
+        "security" : [ {
+          "BearerAuth" : [ ]
+        } ],
+        "tags" : [ "Teams" ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "name" : {
+                    "type" : "string",
+                    "example" : "test-1"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Team updated successfully",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Team"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "summary" : "Delete Team by ID",
+        "security" : [ {
+          "BearerAuth" : [ ]
+        } ],
+        "tags" : [ "Teams" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Team deleted successfully",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Team"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/teams/{id}/members/add" : {
+      "post" : {
+        "summary" : "Add member to Team",
+        "security" : [ {
+          "BearerAuth" : [ ]
+        } ],
+        "tags" : [ "Teams" ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "user_id" : {
+                    "type" : "integer",
+                    "example" : 4
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Member added successfully",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Team"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/teams/{id}/members/remove" : {
+      "post" : {
+        "summary" : "Remove member from Team",
+        "security" : [ {
+          "BearerAuth" : [ ]
+        } ],
+        "tags" : [ "Teams" ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "user_id" : {
+                    "type" : "integer",
+                    "example" : 4
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Member removed successfully",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Team"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
